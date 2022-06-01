@@ -1,0 +1,72 @@
+debug: 0
+debug_steps: 10
+
+exps_dir: 'experiments'
+logging_interval: 10 # logging interval for training
+num_epoch: 1000
+show_img_in_inference: True
+show_more_img: False
+do_validation: False
+
+dataset:
+    train_dataset: 'dataset/lane_detection/lane-detection_v01b_for_pinet.json'
+    val_dataset: 'dataset/lane_detection/lane-detection_v01b_for_pinet.json'
+    train_images_path: 'dataset/lane_detection/images/'
+    test_images_path: 'dataset/lane_detection/test/images'
+
+    x_size: 512
+    y_size: 256
+    resize_ratio: 8
+    grid_x: 64 # x_size/resize_ratio
+    grid_y: 32 # y_size/resize_ratio
+    feature_size: 4
+
+    noise_ratio: 0.4
+    intensity_ratio: 0.4
+    shadow_ratio: 0.6
+    flip_ratio: 0.4
+    translation_ratio: 0.6
+    rotate_ratio: 0.6
+    scaling_ratio: 0.2   
+
+train_loader_parameter:
+    num_workers: 8
+    batch_size: 20
+    is_shuffle: True
+
+val_loader_parameter:
+    num_workers: 8
+    batch_size: 20  
+    is_shuffle: False
+
+testloader_parameter:
+    num_workers: 4
+    batch_size: 80
+    is_shuffle: False
+
+optimizer:
+    name: Adam
+    l_rate: 0.00001
+    weight_decay: 0
+
+lr_scheduler:
+    name: CosineAnnealingLR
+    parameters:
+        T_max: 385
+
+loss_parameters:
+    K1: 1.0
+    K2: 2.0
+    constant_offset: 1.0
+    constant_exist: 1.0    #2
+    constant_nonexist: 1.0 # 1.5 last 200epoch
+    constant_angle: 1.0
+    constant_similarity: 1.0
+    constant_alpha: 1.0 #in SGPN paper, they increase this factor by 2 every 5 epochs
+    constant_beta: 1.0
+    constant_gamma: 1.0
+    constant_back: 1.0
+    constant_l: 1.0
+    constant_lane_loss: 1.0  # 1.5 last 200epoch
+    constant_instance_loss: 1.0
+

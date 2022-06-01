@@ -1,0 +1,51 @@
+debug: 0
+debug_steps: 10
+
+exps_dir: 'experiments'
+logging_interval: 10 # logging interval for training
+num_epoch: 1000
+show_img_in_inference: False
+show_more_img: True
+
+
+dataset:
+    train_dataset: 'dataset/lane_detection/lane-detection_v03_refine_trainset.json'
+    val_dataset: 'dataset/lane_detection/lane-detection_v03_refine_valset.json'
+    train_images_path: 'dataset/lane_detection/images/'
+    test_images_path: 'dataset/lane_detection/test/images'
+
+    x_size: 512
+    y_size: 256
+    resize_ratio: 8
+    grid_x: 64 # x_size/resize_ratio
+    grid_y: 32 # y_size/resize_ratio
+    noise_ratio: 0.4
+    intensity_ratio: 0.4
+    shadow_ratio: 0.6
+    flip_ratio: 0.4
+    translation_ratio: 0.6
+    rotate_ratio: 0.6
+    scaling_ratio: 0.2
+
+train_loader_parameter:
+    num_workers: 4
+    batch_size: 20
+    is_shuffle: True
+
+val_loader_parameter:
+    num_workers: 4
+    batch_size: 20
+    is_shuffle: False
+
+testloader_parameter:
+    num_workers: 4
+    batch_size: 80
+    is_shuffle: True
+
+loss_parameters:
+    conf_weight: 1
+    lower_weight: 1
+    upper_weight: 1
+    cls_weight: 1
+    poly_weight: 300
+

@@ -1,0 +1,49 @@
+#!/bin/bash -l
+# Sample script for pytorch job
+
+
+
+## Scheduler parameters ##
+#BSUB -J pytorch-3.7                # job name
+##BSUB -o pytorch-3.7.%J.stdout      # optional: Have output written to specific file
+##BSUB -e pytorch-3.7.%J.stderr      # optional: Have errors written to specific file
+#BSUB -q rb_cc_cr_challenge               # optional: use highend nodes w/ Volta GPUs (default: Geforce GPUs)
+#BSUB -W 10:00                       # fill in desired wallclock time [hours,]minutes (hours are optional)
+#BSUB -n 4                          # min CPU cores,max CPU cores (max cores is optional)
+#BSUB -M 4096                       # fill in required amount of RAM (in Mbyte)
+# #BSUB -R "span[hosts=2]"          # optional: run on single host (if using more than 1 CPU cores)
+# #BSUB -R "span[ptile=2]"         # optional: fill in to specify cores per node (max 28)
+# #BSUB -P myProject                # optional: fill in cluster project
+
+##BSUB -R "rusage[ngpus_excl_p=1]"   # use 1 GPU (in explusive process mode)
+##BSUB -gpu "num=1:mode=exclusive_process:mps=no"   # use 1 GPU (in explusive process mode)
+#BSUB -gpu "num=1"
+## Job parameters ##
+
+
+
+# Anaconda virtualenv to be used
+# Create before runnign the job with e.g.
+# conda create -n pytorch-3.5 python=3.5 pytorch torchvision 
+# conda create -n pytorch-3.7 python=3.7 pytorch torchvision cudatoolkit=10.1 -c pytorch
+# vEnv=Py38-Cuda10.2 # (please change)
+
+# Source environment (optional)
+#. /fs/applications/lsf/latest/conf/profile.lsf
+#. /fs/applications/modules/current/init/bash
+
+# Load modules & Activate environment
+# module load conda/4.3.33-readonly cuda/8.0.0 cudnn/8.0_v7.0
+# module load conda/4.5.13 cuda/10.0.130 cudnn/10.0_v7.6
+MODULES_TO_LOAD="conda/4.5.13 cuda/10.2.89 cudnn/10.2_v7.6"
+CONDA_ENV="Py37-Cuda10.2-Clone"
+module purge
+module load $MODULES_TO_LOAD
+source activate $CONDA_ENV
+
+# Run your code here (please change, this is only an example)
+
+
+# python pytorch-3.5.py
+#python train.py --cfg cfgs/debug.yaml --exp_name test --cuda_start 0 --cuda_num 1
+python train.py --cfg cfgs/lane_detection.yaml --exp_name odata --cuda_start 0 --cuda_num 1 --resume
